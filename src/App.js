@@ -12,6 +12,7 @@ import LoginPage from './Components/LoginPage';
 import { Route, Routes } from 'react-router-dom';
 import SignupPage from './Components/SignupPage';
 import VerifyOtpPage from './Components/VerifyOtpPage';
+import Nutrition from './Components/Nutrition';
 
 
 
@@ -19,7 +20,7 @@ function App() {
   return (
     <div className="">
     <Routes>
-    <Route path={"/"} element={<><Nav/> <Scroll/> <Paras/> </>}/>
+    <Route path={"/"} element={<><Nav/> <Scroll/> <Paras/>  <Nutrition/> </>}/>
     <Route path='/login' element={<LoginPage/>}/>
     <Route path='/signup' element={<SignupPage/>}/>
     <Route path='/verifyOtp' element={<VerifyOtpPage/>}/>
@@ -35,6 +36,7 @@ function App() {
    {/* <LoginPage/> */}
    {/* <SignupPage/> */}
    {/* <VerifyOtpPage/> */}
+   {/* <Nutrition/> */}
     </div>
   );
 }
