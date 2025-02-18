@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -54,7 +55,7 @@ const ProductList = () => {
             }
           `}</style>
           {products.map((product, index) => (
-            <div key={index} className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0 scroll-snap-align">
+            <Link to={"/productDetails"} key={index} className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0 scroll-snap-align">
               <div className="bg-white rounded-lg p-4 m-2 flex-1 transition-shadow duration-300 hover:shadow-md relative group">
                 <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-tr-lg rounded-bl-lg">
                   {product.discount}% Off
@@ -76,7 +77,7 @@ const ProductList = () => {
                   </button>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         <button onClick={scrollRight} className="absolute right-0 z-10 bg-gray-200 p-2 rounded-full shadow-md">

@@ -15,6 +15,7 @@ import Nutrition from './Components/Nutrition';
 import Footer from './Components/Footer';
 import ScrollText from './Components/ScrollText';
 import ProductDetails from './Components/ProductDetails';
+import Review from './Components/Review';
 
 
 
@@ -22,10 +23,12 @@ function App() {
   return (
     <div className="">
     <Routes>
-    <Route path={"/"} element={<><Nav/> <Scroll/>  <ScrollText/> <Paras/>  <Nutrition/> <Footer/> </>}/>
+    <Route path={"/"} element={<> <Scroll/>  <ScrollText/> <Paras/>  <Nutrition/>  </>}/>
     <Route path='/login' element={<LoginPage/>}/>
     <Route path='/signup' element={<SignupPage/>}/>
     <Route path='/verifyOtp' element={<VerifyOtpPage/>}/>
+    <Route path='/productDetails' element={<ProductDetails/>}/>
+
 
 
 
@@ -41,6 +44,7 @@ function App() {
    {/* <Nutrition/> */}
   {/* <Footer/> */}
   {/* <ProductDetails/> */}
+  {/* <Review/> */}
     </div>
   );
 }
