@@ -35,7 +35,7 @@ const Nutrition = () => {
 
   return (
     <div className="container mx-auto p-4 relative">
-      <h1 className="text-2xl font-bold mb-4">Top Skincare Products</h1>
+      <h1 className="text-2xl font-bold mb-4">Power Up with Nutrition</h1>
       <div className="flex items-center overflow-hidden relative">
         <button onClick={scrollLeft} className="absolute left-0 z-10 bg-gray-200 p-2 rounded-full shadow-md focus:outline-none">
           <FaArrowLeft size={20} />
@@ -68,7 +68,7 @@ const Nutrition = () => {
                 <div className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 rounded-tr-lg rounded-bl-lg">
                   {product.discount}% Off
                 </div>
-                <img src={product.url} alt={product.name} className="h-48 w-full object-cover rounded-md" />
+                <img src={product.url} alt={product.name} className=" w-full object-cover rounded-md" />
                 <h2 className="mt-2 text-blue-500 text-lg line-clamp-2">{product.description}</h2>
                 <div className="flex items-center">
                   {[...Array(5)].map((_, i) => (
@@ -93,14 +93,13 @@ const Nutrition = () => {
         </button>
       </div>
 
-      <h2 className="text-2xl font-bold mt-8 mb-4">Featured Products</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-[5rem]">
         {additionalProducts.map((product, index) => (
           <div key={index} className="bg-gray-100 rounded-lg p-4 m-2 transition-shadow duration-300 hover:shadow-lg relative group zoom-card transition-transform duration-300 ">
             <div className="absolute top-0 right-0 bg-blue-500 text-white px-2 py-1 rounded-tr-lg rounded-bl-lg">
               {product.discount}% Off
             </div>
-            <img src={product.url} alt={product.name} className="h-48 w-full object-cover rounded-md" />
+            <img src={product.url} alt={product.name} className=" w-full object-cover rounded-md" />
             <h2 className="mt-2 text-blue-500 text-lg line-clamp-2">{product.description}</h2>
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (

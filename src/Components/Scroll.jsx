@@ -37,7 +37,7 @@ const [count,setCount]=useState([])
 
   return (
     <div className="overflow-hidden">   
-     <div className="px-[.2rem] mb-[2rem]">
+     <div className="px-[.2rem] mt-[2rem] overflow-hidden">
     <Slider {...settings}  >
      {
         count.map((item,index)=>{
