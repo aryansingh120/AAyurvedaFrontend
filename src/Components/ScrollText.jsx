@@ -6,7 +6,7 @@ const ScrollText = () => {
   const [velocity, setVelocity] = useState(50);
 
   const updateVelocity = () => {
-    setVelocity(window.innerWidth < 650 ? 10 : 50);
+    setVelocity(window.innerWidth < 650 ? 50 : 50);
   };
 
   useEffect(() => {
