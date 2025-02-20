@@ -10,7 +10,7 @@ const VideoRow = () => {
   const receive = async () => {
     try {
       const fetchData = await axios.get(
-        "https://aayurveda-rwdf.onrender.com/video/allVideos"
+        "https://aayurveda-hn8w.onrender.com/video/allVideos"
       );
       const videoUrls = fetchData.data.videos.map((item) => item.url);
       setVideos(videoUrls);

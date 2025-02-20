@@ -18,7 +18,7 @@ const {increment}=useCounter()
 
   const fetchData = async () => {
     try {
-      const receive = await axios.get("https://aayurveda-1.onrender.com/productData/skincareProducts");
+      const receive = await axios.get("https://aayurveda-hn8w.onrender.com/productData/skincareProducts");
       const fetchedProducts = receive.data.allProducts;
       setProducts(fetchedProducts);
       setAdditionalProducts(fetchedProducts.slice(-4)); 

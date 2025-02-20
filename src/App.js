@@ -19,6 +19,7 @@ import Review from './Components/Review';
 import Philosophy from './Components/Philosophy';
 import HairOil from './Components/HairOil';
 import VideoPlayer from './Components/VideoPlayer';
+import CartDetails from './Components/CartDetails';
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
   {/* <Review/> */}
   {/* <HairOil/> */}
   {/* <VideoPlayer/> */}
+  {/* <CartDetails/> */}
     </div>
   );
 }

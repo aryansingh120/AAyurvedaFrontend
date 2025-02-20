@@ -6,7 +6,7 @@ const VerifyOtp = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("https://aayurveda-1.onrender.com/user/verifyOtp", {
+            const response = await fetch("https://aayurveda-hn8w.onrender.com/user/verifyOtp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

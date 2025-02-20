@@ -7,7 +7,7 @@ const HairOil = () => {
 
   const receive=async(req,res)=>{
     try {
-        const fetchData=await axios.get("https://aayurveda-1.onrender.com/productData/hairoilProducts");
+        const fetchData=await axios.get("https://aayurveda-hn8w.onrender.com/productData/hairoilProducts");
         const x = fetchData.data.allProducts;
         console.log(x);
         

@@ -9,7 +9,7 @@ const [count,setCount]=useState([])
   const fetchData=async()=>{
     try {
      
-      const receive=await axios.get("https://aayurveda-1.onrender.com/home/receiveImg");
+      const receive=await axios.get("https://aayurveda-hn8w.onrender.com/home/receiveImg");
      const x=receive.data;
      const z=x.map((item)=>item.url)
       setCount(z);

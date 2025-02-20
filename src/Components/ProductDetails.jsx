@@ -19,7 +19,7 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`https://aayurveda-1.onrender.com/productData/allProducts`);
+        const response = await axios.get(`https://aayurveda-hn8w.onrender.com/productData/allProducts`);
         const fetchedProduct = response.data.allProducts.find(p => p._id === productId);
         setProduct(fetchedProduct);
         window.scrollTo(0,0);
