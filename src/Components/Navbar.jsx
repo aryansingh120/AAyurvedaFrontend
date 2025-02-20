@@ -1,17 +1,6 @@
 import { useState, useEffect } from "react";
-import {
-  Menu,
-  X,
-  ShoppingCart,
-  Search,
-  MapPin,
-  Home,
-  User,
-  Leaf,
-  FileText,
-  Phone,
-} from "lucide-react";
-
+import { Menu,X,ShoppingCart,Search,MapPin,Home,User,Leaf,FileText,Phone,} from "lucide-react";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showCities, setShowCities] = useState(false);
@@ -51,7 +40,7 @@ const Navbar = () => {
   }, [showCities]);
 
   return (
-    <nav className="bg-white p-4 shadow-md relative">
+    <nav className="bg-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center h-16">
         <h1 className="text-orange-500 text-2xl font-bold">Aayurveda</h1>
 
@@ -75,8 +64,8 @@ const Navbar = () => {
             <MapPin size={20} className="text-orange-500" />
             <span>{selectedCity}</span>
           </div>
-
-          <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">Login</button>
+           <Link to={"/login"}>
+          <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">Login</button></Link>
           <ShoppingCart className="text-gray-700 cursor-pointer" size={28} />
         </div>
 
@@ -169,7 +158,8 @@ const Navbar = () => {
                 <span className="ml-2">{item.name}</span>
               </a>
             ))}
-            <button className="bg-orange-500 text-white px-6 py-[rem] rounded-sm font-bold w-full mt-4">Login</button>
+            <Link to={"/login"}>
+            <button className="bg-orange-500 text-white px-6 py-[.8rem] rounded-sm font-bold w-full mt-4">Login</button></Link>
           </nav>
         )}
       </div>

@@ -6,14 +6,18 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import Navbar from './Components/Nav';
 import Footer from './Components/Footer';
+import { CounterProvider } from './Components/CartContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
   <BrowserRouter>
-  <Navbar/>
+  <CounterProvider> 
+   <Navbar/>
     <App />
     <Footer/>
+    </CounterProvider>
+
    </BrowserRouter>
   </React.StrictMode>
 );

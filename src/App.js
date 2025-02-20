@@ -16,18 +16,22 @@ import Footer from './Components/Footer';
 import ScrollText from './Components/ScrollText';
 import ProductDetails from './Components/ProductDetails';
 import Review from './Components/Review';
-
-
+import Philosophy from './Components/Philosophy';
+import HairOil from './Components/HairOil';
+import VideoPlayer from './Components/VideoPlayer';
 
 function App() {
   return (
     <div className="">
     <Routes>
-    <Route path={"/"} element={<> <Scroll/>  <ScrollText/> <Paras/>  <Nutrition/>  </>}/>
+    <Route path={"/"} element={<> <Scroll/>  <ScrollText/>   <VideoPlayer/>
+      <Paras/>  <Nutrition/>
+      </>}/>
     <Route path='/login' element={<LoginPage/>}/>
     <Route path='/signup' element={<SignupPage/>}/>
     <Route path='/verifyOtp' element={<VerifyOtpPage/>}/>
-    <Route path='/productDetails' element={<ProductDetails/>}/>
+    <Route path='/productDetails' element={ <><ProductDetails/></>}/>
+
 
 
 
@@ -45,6 +49,8 @@ function App() {
   {/* <Footer/> */}
   {/* <ProductDetails/> */}
   {/* <Review/> */}
+  {/* <HairOil/> */}
+  {/* <VideoPlayer/> */}
     </div>
   );
 }

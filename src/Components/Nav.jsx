@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
-import { Menu,X,ShoppingCart,Search,MapPin,Home,User,Leaf,FileText,Phone,} from "lucide-react";
+import { Menu, X, ShoppingCart, Search, MapPin, Home, User, Leaf, FileText, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
+import "./Service.css"
+import { useCounter } from "./CartContext";
 const Navbar = () => {
+  const {count}=useCounter();
   const [isOpen, setIsOpen] = useState(false);
   const [showCities, setShowCities] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Rajasthan");
@@ -40,7 +43,7 @@ const Navbar = () => {
   }, [showCities]);
 
   return (
-    <nav className="bg-white p-4 shadow-md relative">
+    <nav className="fixed top-0 left-0 w-full bg-white p-4 shadow-md z-50">
       <div className="container mx-auto flex justify-between items-center h-16">
         <h1 className="text-orange-500 text-2xl font-bold">Aayurveda</h1>
 
@@ -64,9 +67,14 @@ const Navbar = () => {
             <MapPin size={20} className="text-orange-500" />
             <span>{selectedCity}</span>
           </div>
-           <Link to={"/login"}>
-          <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">Login</button></Link>
-          <ShoppingCart className="text-gray-700 cursor-pointer" size={28} />
+          <Link to={"/login"}>
+            <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">Login</button>
+          </Link>
+          <div className="relative">
+            <ShoppingCart className="text-gray-700 cursor-pointer" size={28} />
+            <div
+              className="absolute top-[-10px] right-[-10px] bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center text-sm">{count}</div>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -159,7 +167,8 @@ const Navbar = () => {
               </a>
             ))}
             <Link to={"/login"}>
-            <button className="bg-orange-500 text-white px-6 py-[.8rem] rounded-sm font-bold w-full mt-4">Login</button></Link>
+              <button className="bg-orange-500 text-white px-6 py-[.8rem] rounded-sm font-bold w-full mt-4">Login</button>
+            </Link>
           </nav>
         )}
       </div>

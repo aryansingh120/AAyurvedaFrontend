@@ -40,7 +40,7 @@ const [count,setCount]=useState([])
      <div className="px-[.2rem] mt-[2rem] overflow-hidden">
     <Slider {...settings}  >
      {
-        count.map((item,index)=>{
+        count?.map((item,index)=>{
             return <img src={item} key={index} alt="img not available" className=" rounded-md" />
         })
      }
