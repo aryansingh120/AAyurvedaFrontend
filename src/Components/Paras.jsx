@@ -31,6 +31,7 @@ const ProductList = () => {
       const data = await response.json();
       if (response.ok) {
         increment();
+
         alert("Item added to cart successfully!");
       } else {
         throw new Error(data.message || "Failed to add item to cart");

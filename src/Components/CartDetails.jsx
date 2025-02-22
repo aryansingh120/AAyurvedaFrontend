@@ -1,55 +1,121 @@
-import React from 'react';
-import img1 from "../assets/1nine.png";
-import img2 from "../assets/1eight.png";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useCounter } from "./CartContext";
 
 const CartDetails = () => {
-    const products = [
-        {
-            image: img1,
-            name: "STORITE RFID Blocking Credit/Debit Metal Card Wallet",
-            description: "Set of 1, Black",
-            seller: "SaiTech IT Pvt. Ltd.",
-            price: 338,
-            originalPrice: 3398,
-            discount: "90% Off",
-            delivery: "Delivery in 2 days, Sat"
-        },
-        {
-            image: img2,
-            name: "StealODeal Long-Lasting RFID Blocking Matte Black",
-            description: "Set of 1, Black",
-            seller: "StealODeal",
-            price: 171,
-            originalPrice: 499,
-            discount: "65% Off",
-            delivery: "Delivery by Sun Feb 23"
-        }
-    ];
+  const [products, setProducts] = useState([]);
+  const token = localStorage.getItem("authToken");
+  const {setCount}=useCounter()
 
-    return (
-        <div className="w-4/5 mx-auto space-y-4 mb-[2rem]">
-            {products.map((product, index) => (
-                <div key={index} className="flex border border-gray-300 p-4 shadow-md bg-white">
-                    <img className="w-32 h-32 object-cover" src={product.image} alt={product.name} />
-                    <div className="ml-4 flex-1">
-                        <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-                        <p className="text-gray-600 text-sm mt-1">{product.description}</p>
-                        <p className="text-gray-500 text-sm">Seller: <span className="text-blue-600">{product.seller}</span></p>
-                        <p className="text-green-600 text-sm mt-1">{product.delivery}</p>
-                        <div className="mt-2 flex items-center space-x-2">
-                            <span className="text-gray-500 line-through">₹{product.originalPrice}</span>
-                            <span className="text-xl font-bold text-orange-500">₹{product.price}</span>
-                            <span className="text-green-600 font-semibold">{product.discount}</span>
-                        </div>
-                        <div className="mt-4 flex justify-end space-x-6 pr-4">
-                            <button className="bg-orange-500 text-white px-6 py-2 rounded shadow-md hover:bg-orange-600 transition">Order Now</button>
-                            <button className="bg-gray-300 text-gray-800 px-6 py-2 rounded shadow-md hover:bg-gray-400 transition">Remove</button>
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
+  const fetchCartItems = async () => {
+    try {
+      const response = await axios.get("http://localhost:2100/cart/allCart", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Cart API Response:", response.data);
+    //   setCount(response.data.totalProducts)
+      setProducts(response.data.allCarts);
+      
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (token) {
+      fetchCartItems();
+    }
+  }, [token]);
+
+  // ✅ Remove Item Function
+  const removeItem = async (cartItemId) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:2100/cart/deleteCart",
+        { productId: cartItemId }, // ✅ Correct productId bhejna
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log("Delete Response:", response.data);
+
+      // 🛒 Cart se item hata do (state update)
+      setProducts((prevProducts) =>
+        prevProducts.filter((item) => item.productId._id !== cartItemId)
+      );
+    } catch (error) {
+      console.error("Error removing item:", error);
+    }
+  };
+
+  return (
+    <div className="w-11/12 md:w-4/5 mx-auto space-y-6 mb-8">
+      <h1 className="text-2xl font-bold text-gray-800 text-center">🛒 Your Shopping Cart</h1>
+      {products.length > 0 ? (
+        products.map((product, index) => (
+          <div
+            key={index}
+            className="flex flex-col md:flex-row border border-gray-300 p-6 shadow-lg bg-white rounded-lg transition-all duration-300 hover:shadow-xl"
+          >
+            {/* Left: Product Image */}
+            <img
+              className="w-full md:w-40 md:h-44 object-cover rounded-md"
+              src={product?.productId?.url || "fallback-image.png"}
+              alt={product?.productId?.productName || "Product"}
+            />
+
+            {/* Right: Product Details */}
+            <div className="mt-4 md:mt-0 md:ml-6 flex-1 space-y-2">
+              <h2 className="text-lg md:text-xl font-semibold text-gray-900">
+                {product?.productId?.description || "N/A"}
+              </h2>
+
+              {/* Static Seller Field */}
+              <p className="text-gray-500 text-sm">
+                Seller: <span className="text-blue-600 font-medium">Best Seller</span>
+              </p>
+
+              {/* Quantity Field */}
+              <p className="text-gray-500 text-sm">
+                Quantity: <span className="text-orange-500 font-semibold">{product?.quantity || 1}</span>
+              </p>
+
+              {/* Delivery */}
+              <p className="text-green-600 text-sm font-medium">🚚 Delivery in 2 days</p>
+
+              {/* Price & Discount */}
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-500 line-through text-sm">₹{product?.productId?.price || 0}</span>
+                <span className="text-xl font-bold text-orange-500">₹{product?.productId?.discountedPrice || 0}</span>
+                <span className="text-green-600 font-semibold text-sm">
+                  {product?.productId?.discount || "0%"} Off
+                </span>
+              </div>
+
+              {/* Buttons */}
+              <div className="mt-4 flex flex-wrap justify-center md:justify-end space-x-4">
+                <button className="bg-orange-500 text-white font-medium px-5 py-2 rounded-lg shadow-md hover:bg-orange-600 transition">
+                  🛍 Order Now
+                </button>
+                <button
+                  onClick={() => removeItem(product.productId._id)}
+                  className="bg-gray-300 text-gray-800 font-medium px-5 py-2 rounded-lg shadow-md hover:bg-gray-400 transition"
+                >
+                  ❌ Remove
+                </button>
+              </div>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-center text-gray-600 text-lg font-medium mt-8">
+          Your cart is empty! 🛒
+        </p>
+      )}
+    </div>
+  );
 };
 
 export default CartDetails;

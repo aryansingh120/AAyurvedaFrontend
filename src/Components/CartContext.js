@@ -1,5 +1,4 @@
-import { createContext, useContext, useState } from "react";
-
+import { createContext, useContext, useEffect, useState } from "react";
 const CounterContext = createContext();
 
 export const CounterProvider = ({ children }) => {
@@ -9,8 +8,9 @@ export const CounterProvider = ({ children }) => {
   const increment = () => setCount(count + 1);
   const decrement = () => setCount(count - 1);
 
+  
   return (
-    <CounterContext.Provider value={{ count, increment, decrement,setUserName ,userName}}>
+    <CounterContext.Provider value={{ count, increment, decrement,setUserName ,userName,setCount}}>
       {children}
     </CounterContext.Provider>
   );
