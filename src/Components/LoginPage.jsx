@@ -10,8 +10,8 @@ const LoginPage = () => {
   const [serverError, setServerError] = useState('');
   const navigate = useNavigate();
 
+  // 🔍 Validation Function
   const validate = () => {
-    
     const newErrors = {};
 
     if (!credentials.email.trim()) {
@@ -27,6 +27,7 @@ const LoginPage = () => {
     return newErrors;
   };
 
+  // 🔑 Login Function
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -51,9 +52,13 @@ const LoginPage = () => {
       if (response.ok) {
         console.log("✅ Login successful");
         alert("Login successful");
-        // setUserName("paras")n
-        navigate("/"); // ✅ Redirect only on success
 
+        // 🟢 Token ko localStorage me store karna
+        localStorage.setItem("authToken", data.token);
+        console.log(data.token);
+        
+
+        navigate("/"); // ✅ Redirect only on success
       } else {
         throw new Error(data.message || "Invalid credentials");
       }

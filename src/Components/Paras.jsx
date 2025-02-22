@@ -3,14 +3,42 @@ import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useCounter } from './CartContext';
+import "./global.css"
 
 const ProductList = () => {
-const {increment}=useCounter()
+  const { increment } = useCounter();
 
-  const handleButtonClick = (event) => {
-    event.preventDefault(); // ✅ Prevent default link navigation
-    event.stopPropagation(); // ✅ Stop event from bubbling to Link
-    increment()
+  const handleAddToCart = async (event, productId) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Please login to add items to cart!");
+      return;
+    }
+
+    try {
+      const response = await fetch("https://aayurveda-hn8w.onrender.com/cart/cartadd", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ productId, quantity: 1 })
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        increment();
+        alert("Item added to cart successfully!");
+      } else {
+        throw new Error(data.message || "Failed to add item to cart");
+      }
+    } catch (error) {
+      console.error("❌ Error:", error.message);
+      alert("Something went wrong while adding to cart.");
+    }
   };
 
   const [products, setProducts] = useState([]);
@@ -21,8 +49,8 @@ const {increment}=useCounter()
       const receive = await axios.get("https://aayurveda-hn8w.onrender.com/productData/skincareProducts");
       const fetchedProducts = receive.data.allProducts;
       setProducts(fetchedProducts);
-      setAdditionalProducts(fetchedProducts.slice(-4)); 
-        } catch (error) {
+      setAdditionalProducts(fetchedProducts.slice(-4));
+    } catch (error) {
       console.log("error", error.message);
     }
   };
@@ -55,16 +83,8 @@ const {increment}=useCounter()
           className="flex overflow-x-auto space-x-4 scrollbar-hide"
           style={{ scrollSnapType: 'x mandatory' }}
         >
-          <style>{`
-            .scrollbar-hide::-webkit-scrollbar {
-              display: none;
-            }
-            .scroll-snap-align {
-              scroll-snap-align: start;
-            }
-          `}</style>
           {products?.map((product, index) => (
-            <Link to={`/productDetails?id=${product?._id}`} state={1} key={index} className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0 scroll-snap-align">
+            <Link to={`/productDetails?id=${product?._id}`} key={index} className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0">
               <div className="bg-white rounded-lg p-4 m-2 flex-1 transition-shadow duration-300 hover:shadow-md relative group">
                 <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-tr-lg rounded-bl-lg">
                   {product?.discount}% Off
@@ -79,9 +99,9 @@ const {increment}=useCounter()
                 </div>
                 <p className="text-red-500 font-bold ">MRP: <span className='line-through decoration-2'> ₹{product?.price}</span></p>
                 <p className="text-green-500 font-bold">Discounted Price: ₹{product?.discountedPrice}</p>
-                <p className="text-gray-700 ">{product?.discount}% off</p>
-                <div className="mt-[1rem] bottom-4 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center">
-                  <button className="bg-orange-500 text-white py-2 px-4 w-full rounded" onClick={handleButtonClick}>
+                <div className="mt-[1rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center">
+                  <button className="bg-orange-500 text-white py-2 px-4 w-full rounded" 
+                    onClick={(e) => handleAddToCart(e, product?._id)}>
                     Add to Cart
                   </button>
                 </div>
@@ -93,7 +113,8 @@ const {increment}=useCounter()
           <FaArrowRight size={20} />
         </button>
       </div>
-{/* ************************************************************************************ */}
+
+      {/* Additional Products Section */}
       <div className="flex justify-center flex-wrap">
         {additionalProducts?.map((product, index) => (
           <Link to={`/productDetails?id=${product?._id}`} key={index} className="w-full sm:w-1/2 lg:w-1/4 p-2">
@@ -111,9 +132,8 @@ const {increment}=useCounter()
               </div>
               <p className="text-red-500 font-bold ">MRP: <span className='line-through decoration-2'> ₹{product?.price}</span></p>
               <p className="text-green-500 font-bold">Discounted Price: ₹{product?.discountedPrice}</p>
-              <p className="text-gray-700 ">{product?.discount}% off</p>
-              <div className="mt-[1rem] bottom-4 left-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center">
-                <button className="bg-orange-500 text-white py-2 px-4 w-full rounded" onClick={handleButtonClick}>
+              <div className="mt-[1rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center">
+                <button className="bg-orange-500 text-white py-2 px-4 w-full rounded" onClick={(e) => handleAddToCart(e, product?._id)}>
                   Add to Cart
                 </button>
               </div>

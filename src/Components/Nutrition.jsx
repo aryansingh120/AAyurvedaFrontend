@@ -9,13 +9,43 @@ const Nutrition = () => {
   
   const [products, setProducts] = useState([]);
   const [additionalProducts, setAdditionalProducts] = useState([]);
+// *******************************************************************
+const handleAddToCart = async (event, productId) => {
+  event.preventDefault();     //Prevent default link navigation
+  event.stopPropagation();    //Stop event from bubbling to Link
 
-  const handleButtonClick = (event) => {
-    event.preventDefault(); // ✅ Prevent default link navigation
-    event.stopPropagation(); // ✅ Stop event from bubbling to Link
-    increment()
-  };
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    alert("Please login to add items to cart!");
+    return;
+  }
 
+  try {
+    const response = await fetch("https://aayurveda-hn8w.onrender.com/cart/cartadd", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ productId, quantity: 1 })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      increment();
+      alert("Item added to cart successfully!");
+    } else {
+      throw new Error(data.message || "Failed to add item to cart");
+    }
+  } catch (error) {
+    console.error("❌ Error:", error.message);
+    alert("Something went wrong while adding to cart.");
+  }
+};
+
+
+
+// ************************************************************
   const fetchData = async () => {
     try {
       const receive = await axios.get("https://aayurveda-hn8w.onrender.com/productData/nutritionProducts");
@@ -90,7 +120,7 @@ const Nutrition = () => {
                 <p className="text-green-500 font-bold">Discounted Price: ₹{product?.discountedPrice}</p>
                 <p className="text-gray-700">{product?.discount}% off</p>
                 <div className="mt-6 bottom-4 left-0 right-0 flex justify-center">
-                  <button className="bg-blue-500 text-white py-2 px-4 w-full rounded" onClick={handleButtonClick}>
+                  <button className="bg-blue-500 text-white py-2 px-4 w-full rounded"onClick={(e) => handleAddToCart(e, product?._id)}>
                     Add to Cart
                   </button>
                 </div>
@@ -121,7 +151,7 @@ const Nutrition = () => {
             <p className="text-green-500 font-bold">Discounted Price: ₹{product?.discountedPrice}</p>
             <p className="text-gray-700">{product?.discount}% off</p>
             <div className="mt-6 bottom-4 left-0 right-0 flex justify-center ">
-              <button className="bg-blue-500 text-white py-2 px-4 w-full rounded" onClick={handleButtonClick}>
+              <button className="bg-blue-500 text-white py-2 px-4 w-full rounded" onClick={(e) => handleAddToCart(e, product?._id)}>
                 Add to Cart
               </button>
             </div>

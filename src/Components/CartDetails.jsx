@@ -27,7 +27,7 @@ const CartDetails = () => {
     ];
 
     return (
-        <div className="w-4/5 mx-auto space-y-4">
+        <div className="w-4/5 mx-auto space-y-4 mb-[2rem]">
             {products.map((product, index) => (
                 <div key={index} className="flex border border-gray-300 p-4 shadow-md bg-white">
                     <img className="w-32 h-32 object-cover" src={product.image} alt={product.name} />

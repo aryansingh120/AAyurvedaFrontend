@@ -20,6 +20,9 @@ import Philosophy from './Components/Philosophy';
 import HairOil from './Components/HairOil';
 import VideoPlayer from './Components/VideoPlayer';
 import CartDetails from './Components/CartDetails';
+import OrderAddress from './Components/OrderAddress';
+import PaymentOptions from './Components/PaymentOptions';
+import ContactUs from './Components/ContactUs';
 
 function App() {
   return (
@@ -32,6 +35,8 @@ function App() {
     <Route path='/signup' element={<SignupPage/>}/>
     <Route path='/verifyOtp' element={<VerifyOtpPage/>}/>
     <Route path='/productDetails' element={ <><ProductDetails/></>}/>
+    <Route path='/cartDetails' element={<CartDetails/>}/>
+
 
 
 
@@ -53,6 +58,9 @@ function App() {
   {/* <HairOil/> */}
   {/* <VideoPlayer/> */}
   {/* <CartDetails/> */}
+  {/* <OrderAddress/> */}
+  {/* <PaymentOptions/> */}
+  {/* <ContactUs/> */}
     </div>
   );
 }

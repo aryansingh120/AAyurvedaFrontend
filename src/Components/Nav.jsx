@@ -70,11 +70,12 @@ const Navbar = () => {
           <Link to={"/login"}>
             <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">Login</button>
           </Link>
+          <Link to={"/cartDetails"}>
           <div className="relative">
             <ShoppingCart className="text-gray-700 cursor-pointer" size={28} />
             <div
               className="absolute top-[-10px] right-[-10px] bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center text-sm">{count}</div>
-          </div>
+          </div></Link>
         </div>
 
         {/* Mobile Menu Button */}
