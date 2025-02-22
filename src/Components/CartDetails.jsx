@@ -9,7 +9,7 @@ const CartDetails = () => {
 
   const fetchCartItems = async () => {
     try {
-      const response = await axios.get("http://localhost:2100/cart/allCart", {
+      const response = await axios.get("https://aayurveda-hn8w.onrender.com/cart/allCart", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +34,7 @@ const CartDetails = () => {
   const removeItem = async (cartItemId) => {
     try {
       const response = await axios.post(
-        "http://localhost:2100/cart/deleteCart",
+        "https://aayurveda-hn8w.onrender.com/cart/deleteCart",
         { productId: cartItemId }, // ✅ Correct productId bhejna
         { headers: { Authorization: `Bearer ${token}` } }
       );
