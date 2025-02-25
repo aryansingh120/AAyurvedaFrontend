@@ -2,11 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { useCounter } from './CartContext';
 import "./global.css"
+import { useCart } from './CartContext';
 
-const ProductList = () => {
-  const { increment } = useCounter();
+const Paras = () => {
+  const {increaseCart}=useCart()
 
   const handleAddToCart = async (event, productId) => {
     event.preventDefault();
@@ -30,8 +30,7 @@ const ProductList = () => {
 
       const data = await response.json();
       if (response.ok) {
-        increment();
-
+         increaseCart();
         alert("Item added to cart successfully!");
       } else {
         throw new Error(data.message || "Failed to add item to cart");
@@ -51,6 +50,8 @@ const ProductList = () => {
       const fetchedProducts = receive.data.allProducts;
       setProducts(fetchedProducts);
       setAdditionalProducts(fetchedProducts.slice(-4));
+      console.log("kfuygsiuyvyue");
+      
     } catch (error) {
       console.log("error", error.message);
     }
@@ -85,7 +86,7 @@ const ProductList = () => {
           style={{ scrollSnapType: 'x mandatory' }}
         >
           {products?.map((product, index) => (
-            <Link to={`/productDetails?id=${product?._id}`} key={index} className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0">
+            <Link to={`/productDetails?id=${product?._id}`} state={1} key={index} className="w-full sm:w-1/2 lg:w-1/4 flex-shrink-0">
               <div className="bg-white rounded-lg p-4 m-2 flex-1 transition-shadow duration-300 hover:shadow-md relative group">
                 <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-tr-lg rounded-bl-lg">
                   {product?.discount}% Off
@@ -146,4 +147,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default Paras;

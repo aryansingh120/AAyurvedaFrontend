@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaWhatsapp, FaGoogle, FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const SignupPage = () => {
+  let location=useLocation();
+    let path=location.pathname;
+    
+        useEffect(()=>{
+            window.scrollTo(0,0)
+
+        },[path])
   const [details, setDetails] = useState({
     fullName: "",
     email: "",

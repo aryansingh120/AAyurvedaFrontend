@@ -2,12 +2,21 @@ import { useState, useEffect } from "react";
 import { Menu, X, ShoppingCart, Search, MapPin, Home, User, Leaf, FileText, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Service.css"
-import { useCounter } from "./CartContext";
+import { useCart } from "./CartContext";
+import axios from "axios";
 const Navbar = () => {
-  const {count}=useCounter();
+  const {userName,cartNum}=useCart()
   const [isOpen, setIsOpen] = useState(false);
   const [showCities, setShowCities] = useState(false);
   const [selectedCity, setSelectedCity] = useState("Rajasthan");
+
+  useEffect(() => {
+    if (showCities) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showCities]);
 
   const cities = [
     "Agra", "Ahmedabad", "Allahabad", "Amritsar", "Bareilly", "Bengaluru",
@@ -47,19 +56,16 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center h-16">
         <h1 className="text-orange-500 text-2xl font-bold">Aayurveda</h1>
 
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-4 flex-grow ml-8">
-          {/* Search Box */}
           <div className="relative flex-grow">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
             <input
               type="text"
-              placeholder="Search for Mobiles, Accessories & More"
+              placeholder="Search for Aayurvedic Products & more"
               className="p-3 pl-12 rounded-full w-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
 
-          {/* City Selector */}
           <div
             className="relative flex items-center space-x-2 border border-gray-300 p-2 rounded-full cursor-pointer hover:bg-gray-100 cities-dropdown"
             onClick={() => setShowCities(!showCities)}
@@ -68,23 +74,21 @@ const Navbar = () => {
             <span>{selectedCity}</span>
           </div>
           <Link to={"/login"}>
-            <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">Login</button>
+            <button className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold">{userName}</button>
           </Link>
           <Link to={"/cartDetails"}>
           <div className="relative">
             <ShoppingCart className="text-gray-700 cursor-pointer" size={28} />
             <div
-              className="absolute top-[-10px] right-[-10px] bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center text-sm">{count}</div>
+              className="absolute top-[-10px] right-[-10px] bg-red-500 text-white rounded-full w-[20px] h-[20px] flex items-center justify-center text-sm">{cartNum}</div>
           </div></Link>
         </div>
 
-        {/* Mobile Menu Button */}
         <button className="md:hidden text-gray-700" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Search Box for Mobile */}
       <div className="md:hidden p-4">
         <div className="relative w-full">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
@@ -96,7 +100,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Cities Dropdown */}
       {showCities && (
         <div className="absolute left-0 top-full w-full bg-white shadow-md rounded-md border border-gray-300 z-10 p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 overflow-y-auto max-h-80 cities-dropdown">
           {cities.map((city, index) => (
@@ -113,8 +116,7 @@ const Navbar = () => {
           ))}
         </div>
       )}
-
-      {/* Slide-in Menu */}
+{/* ***************************************************************** */}
       <div
         className={`fixed top-0 right-0 w-full h-full bg-white shadow-lg z-20 transform ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -168,13 +170,12 @@ const Navbar = () => {
               </a>
             ))}
             <Link to={"/login"}>
-              <button className="bg-orange-500 text-white px-6 py-[.8rem] rounded-sm font-bold w-full mt-4">Login</button>
+              <button className="bg-orange-500 text-white px-6 py-[.8rem] rounded-sm font-bold w-full mt-4" onClick={() => setIsOpen(false)}>Login</button>
             </Link>
           </nav>
         )}
       </div>
 
-      {/* Overlay */}
       {isOpen && <div className="fixed inset-0 bg-black opacity-50 z-10" onClick={() => setIsOpen(false)}></div>}
     </nav>
   );

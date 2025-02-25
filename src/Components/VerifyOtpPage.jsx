@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState,useEffect } from 'react';
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const VerifyOtpPage = () => {
+  let location=useLocation();
+    let path=location.pathname;
+    
+        useEffect(()=>{
+            window.scrollTo(0,0)
+
+        },[path])
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

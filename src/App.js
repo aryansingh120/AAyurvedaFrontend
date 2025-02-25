@@ -23,12 +23,16 @@ import CartDetails from './Components/CartDetails';
 import OrderAddress from './Components/OrderAddress';
 import PaymentOptions from './Components/PaymentOptions';
 import ContactUs from './Components/ContactUs';
+import NavbarSkeleton from './Components/NavbarSkeleton';
+import ScrollSkeleton from './Components/ScrollSkeleton';
+import ParasSkeleton from './Components/ParasSkeleton';
+import PaymentOptions2 from './Components/PaymentOptions2';
 
 function App() {
   return (
     <div className="">
-    <Routes>
-    <Route path={"/"} element={<> <Scroll/>  <ScrollText/>   <VideoPlayer/>
+      <Routes>
+      <Route path={"/"} element={<> <Scroll/>  <ScrollText/>   <VideoPlayer/>
       <Paras/>  <Nutrition/>
       </>}/>
     <Route path='/login' element={<LoginPage/>}/>
@@ -36,22 +40,28 @@ function App() {
     <Route path='/verifyOtp' element={<VerifyOtpPage/>}/>
     <Route path='/productDetails' element={ <><ProductDetails/></>}/>
     <Route path='/cartDetails' element={<CartDetails/>}/>
+    <Route path='/orderAddress' element={<OrderAddress/>}/>
+    <Route path="/paymentDetails" element={<PaymentOptions/>}/>
+    <Route path="/paymentOptions" element={<PaymentOptions2 amount={500} userId="67b88a7bae831f0b6fb4eb65" orderId="order_Pz1XqQ40WXrK27"/>}/>
+    {/* <Route path="/paymentOptions" element={<PaymentOptions2/>}/> */}
 
 
 
 
 
 
-    </Routes>
+
+    </Routes>  
   {/* <Nav/> */}
     {/* <Navbar/> */}
-    {/* <Scroll/> */}
+    {/* <Scroll/>
+    <ScrollText/>  */}
     {/* <Services/> */}
-    {/* <Paras/> */}
-   {/* <LoginPage/> */}
-   {/* <SignupPage/> */}
-   {/* <VerifyOtpPage/> */}
-   {/* <Nutrition/> */}
+    {/* <Paras/>
+   <LoginPage/>
+   <SignupPage/>
+   <VerifyOtpPage/>
+   <Nutrition/> */}
   {/* <Footer/> */}
   {/* <ProductDetails/> */}
   {/* <Review/> */}
@@ -61,6 +71,10 @@ function App() {
   {/* <OrderAddress/> */}
   {/* <PaymentOptions/> */}
   {/* <ContactUs/> */}
+  {/* <NavbarSkeleton/> 
+   <ScrollSkeleton/> 
+   <ParasSkeleton/> */}
+  {/* <PaymentOptions2 amount={500} userId="67b88a7bae831f0b6fb4eb65" orderId="order_Pz1XqQ40WXrK27"/> */}
     </div>
   );
 }

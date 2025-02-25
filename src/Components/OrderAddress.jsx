@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const OrderAddress = () => {
+  let location = useLocation();
+  let path = location.pathname;
+  let navigate = useNavigate(); // ✅ Navigation Hook
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [path]);
+
   const [address, setAddress] = useState({
     fullName: "",
     mobile: "",
@@ -11,25 +21,71 @@ const OrderAddress = () => {
     landmark: "",
     addressType: "home",
   });
+
   const [pincodeValid, setPincodeValid] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAddress({ ...address, [name]: value });
-    
+
     if (name === "pincode") {
       setPincodeValid(/^[1-9][0-9]{5}$/.test(value));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Address Saved:", address);
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await axios.post(
+        "https://aayurveda-hn8w.onrender.com/address/userAddress",
+        address,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          },
+        }
+      );
+
+      setMessage("Address saved successfully!");
+      setAddress({
+        fullName: "",
+        mobile: "",
+        street: "",
+        city: "",
+        state: "",
+        pincode: "",
+        landmark: "",
+        addressType: "home",
+      });
+
+      // ✅ Address Save hone ke turant baad Navigate karo Payment Page par
+      setTimeout(() => {
+        navigate("/paymentOptions"); // 👉 Is route ko aapke project ke hisaab se update kar lena
+      }, 1000);
+
+    } catch (error) {
+      setMessage("Failed to save address. Please try again.");
+      console.error("Error saving address:", error);
+    }
+
+    setLoading(false);
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
-      <h2 className="text-2xl font-semibold mb-4 text-orange-500">Enter Your Address</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-orange-500">
+        Enter Your Address
+      </h2>
+      {message && (
+        <p className={`mb-4 text-sm ${message.includes("success") ? "text-green-500" : "text-red-500"}`}>
+          {message}
+        </p>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -137,9 +193,10 @@ const OrderAddress = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-orange-500 text-white py-2 rounded hover:bg-orange-600"
+          className="w-full mt-2 bg-orange-500 text-white py-2 rounded hover:bg-orange-600"
+          disabled={loading}
         >
-          Save Address and Make Payment
+          {loading ? "Saving..." : "Save Address and Make Payment"}
         </button>
       </form>
     </div>

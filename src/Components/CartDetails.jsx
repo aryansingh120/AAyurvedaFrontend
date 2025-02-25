@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useCounter } from "./CartContext";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "./CartContext";
 
 const CartDetails = () => {
   const [products, setProducts] = useState([]);
   const token = localStorage.getItem("authToken");
-  const {setCount}=useCounter()
+  const navigate = useNavigate();
+  const {setSelectedProductId,decreaseCart}=useCart()
 
+  // 🛒 Fetch Cart Items
   const fetchCartItems = async () => {
     try {
       const response = await axios.get("https://aayurveda-hn8w.onrender.com/cart/allCart", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       console.log("Cart API Response:", response.data);
-    //   setCount(response.data.totalProducts)
-      setProducts(response.data.allCarts);
-      
+
+      // ✅ Ensure quantity is properly set
+      const updatedProducts = response.data.allCarts.map((item) => ({
+        ...item,
+        quantity: item.quantity || 1,
+      }));
+
+      setProducts(updatedProducts);
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }
@@ -33,20 +39,50 @@ const CartDetails = () => {
   // ✅ Remove Item Function
   const removeItem = async (cartItemId) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         "https://aayurveda-hn8w.onrender.com/cart/deleteCart",
-        { productId: cartItemId }, // ✅ Correct productId bhejna
+        { productId: cartItemId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log("Delete Response:", response.data);
-
-      // 🛒 Cart se item hata do (state update)
+      // 🛒 Remove from state
       setProducts((prevProducts) =>
         prevProducts.filter((item) => item.productId._id !== cartItemId)
       );
+      decreaseCart();
     } catch (error) {
       console.error("Error removing item:", error);
+    }
+  };
+
+  // ✅ Update Quantity Function (Frontend)
+  const updateQuantity = (productId, newQuantity) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((item) =>
+        item.productId._id === productId
+          ? { ...item, quantity: Math.max(1, newQuantity) }
+          : item
+      )
+    );
+  };
+
+  // ✅ Order Now Function (Backend me quantity update karega)
+  const handleOrderNow = async (product) => {
+    try {
+      await axios.post(
+        "https://aayurveda-hn8w.onrender.com/cart/updateQuantity",
+        {
+          productId: product.productId._id,
+          quantity: product.quantity,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setSelectedProductId(product.productId._id);
+      navigate("/orderAddress"); // ✅ Order page pr le jao
+    } catch (error) {
+      console.error("Error updating quantity in backend:", error);
     }
   };
 
@@ -78,8 +114,26 @@ const CartDetails = () => {
               </p>
 
               {/* Quantity Field */}
-              <p className="text-gray-500 text-sm">
-                Quantity: <span className="text-orange-500 font-semibold">{product?.quantity || 1}</span>
+              <div className="flex items-center space-x-4">
+                <p className="text-gray-500 text-sm">Quantity:</p>
+                <button
+                  onClick={() => updateQuantity(product.productId._id, product.quantity - 1)}
+                  className="bg-gray-300 px-3 py-1 rounded-md"
+                >
+                  -
+                </button>
+                <span className="text-orange-500 font-semibold">{product.quantity}</span>
+                <button
+                  onClick={() => updateQuantity(product.productId._id, product.quantity + 1)}
+                  className="bg-gray-300 px-3 py-1 rounded-md"
+                >
+                  +
+                </button>
+              </div>
+
+              {/* Subtotal Calculation */}
+              <p className="text-gray-600 font-medium text-md">
+                Subtotal: ₹{(product.quantity * product?.productId?.discountedPrice).toFixed(2)}
               </p>
 
               {/* Delivery */}
@@ -96,7 +150,10 @@ const CartDetails = () => {
 
               {/* Buttons */}
               <div className="mt-4 flex flex-wrap justify-center md:justify-end space-x-4">
-                <button className="bg-orange-500 text-white font-medium px-5 py-2 rounded-lg shadow-md hover:bg-orange-600 transition">
+                <button
+                  onClick={() => handleOrderNow(product)}
+                  className="bg-orange-500 text-white font-medium px-5 py-2 rounded-lg shadow-md hover:bg-orange-600 transition"
+                >
                   🛍 Order Now
                 </button>
                 <button

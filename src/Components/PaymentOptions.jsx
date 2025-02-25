@@ -1,8 +1,16 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { FaGooglePay, FaCcVisa, FaUniversity, FaWallet, FaMoneyBillWave } from "react-icons/fa";
 import { SiPhonepe, SiPaytm } from "react-icons/si";
+import { useLocation } from "react-router-dom";
 
 const PaymentOptions = () => {
+  let location=useLocation();
+    let path=location.pathname;
+    
+        useEffect(()=>{
+            window.scrollTo(0,0)
+
+        },[path])
   const [selectedOption, setSelectedOption] = useState("");
   const [error, setError] = useState("");
 

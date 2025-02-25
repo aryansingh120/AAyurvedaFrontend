@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"; // Importing better ic
 import "./video.css"
 
 const VideoRow = () => {
+  
   const [videos, setVideos] = useState([]);
   const scrollContainerRef = useRef(null);
 

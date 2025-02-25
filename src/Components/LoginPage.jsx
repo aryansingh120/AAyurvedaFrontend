@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { FaWhatsapp, FaFacebook } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
+import { useCart } from './CartContext';
 
 const LoginPage = () => {
+  const {setUserName}=useCart()
+  let location=useLocation();
+    let path=location.pathname;
+    
+        useEffect(()=>{
+            window.scrollTo(0,0)
+
+        },[path])
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -49,9 +58,12 @@ const LoginPage = () => {
       });
 
       const data = await response.json();
+      console.log(data.userName);
+      
       if (response.ok) {
         console.log("✅ Login successful");
         alert("Login successful");
+        setUserName(data.userName)
 
         // 🟢 Token ko localStorage me store karna
         localStorage.setItem("authToken", data.token);

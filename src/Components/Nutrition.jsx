@@ -2,10 +2,10 @@ import React, { useRef, useState, useEffect  } from 'react';
 import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { useCounter } from './CartContext';
+import { useCart } from './CartContext';
 
 const Nutrition = () => {
-  const {increment}=useCounter();
+  const {increaseCart}=useCart()
   
   const [products, setProducts] = useState([]);
   const [additionalProducts, setAdditionalProducts] = useState([]);
@@ -32,7 +32,7 @@ const handleAddToCart = async (event, productId) => {
 
     const data = await response.json();
     if (response.ok) {
-      increment();
+      increaseCart()
       alert("Item added to cart successfully!");
     } else {
       throw new Error(data.message || "Failed to add item to cart");
